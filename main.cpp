@@ -1,27 +1,34 @@
 #include <iostream>
 
-constexpr int size = 5;
+constexpr int SIZE = 5;
 
-static void RotateBitmap90DegreesClockwise(const uint8_t *source, uint8_t *dest) {
-    for (int i = 0; i < size / 2 + size % 2; i++) {
-        for (int j = i; j < size - 1 - i; j++) {
-            int iprime = size - 1 - i;
-            int jprime = size - 1 - j;
-            uint8_t save = source[i * size + j];
-            dest[i * size + j] = source[jprime * size + i];
-            dest[jprime * size + i] = source[iprime * size + jprime];
-            dest[iprime * size + jprime] = source[j * size + iprime];
-            dest[j * size + iprime] = save;
+// Rotate a SIZE * SIZE image of uint8_t pixels 90 degrees clockwise.
+//
+// abcde     upkfa
+// fghij     vqlgb
+// klmno --> wrmhc
+// pqrst     xsnid
+// uvwxy     ytoje
+//
+static void RotateImage90DegreesClockwise(const uint8_t *source, uint8_t *dest) {
+    for (int i = 0; i < SIZE / 2 + SIZE % 2; i++) {
+        for (int j = i; j < SIZE - 1 - i; j++) {
+            int iprime = SIZE - 1 - i;
+            int jprime = SIZE - 1 - j;
+            uint8_t save = source[i * SIZE + j];
+            dest[i * SIZE + j] = source[jprime * SIZE + i];
+            dest[jprime * SIZE + i] = source[iprime * SIZE + jprime];
+            dest[iprime * SIZE + jprime] = source[j * SIZE + iprime];
+            dest[j * SIZE + iprime] = save;
         }
     }
 }
 
 int main() {
     char source[26] = "abcdefghijklmnopqrstuvwxy";
-    char dest[26];
-    std::cout << "Hello, World!" << std::endl;
-    RotateBitmap90DegreesClockwise((uint8_t *)source, (uint8_t *)source);
-    source[25] = 0;
-    std::cout << source << std::endl;
+    char dest[26]   = "                         ";
+    RotateImage90DegreesClockwise((uint8_t *)source, (uint8_t *)dest);
+    dest[25] = 0;
+    std::cout << dest << std::endl;
     return 0;
 }
